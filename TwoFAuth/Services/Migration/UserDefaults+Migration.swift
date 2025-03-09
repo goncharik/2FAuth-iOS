@@ -17,10 +17,17 @@
 
 import Foundation
 
-protocol Storage: ReadonlyStorage {
-    @discardableResult
-    func addToken(_ token: Token) throws -> PersistentToken
-    func updatePersistentToken(_ persistentToken: PersistentToken) throws
-    func moveTokenFromIndex(_ origin: Int, toIndex destination: Int)
-    func deletePersistentToken(_ persistentToken: PersistentToken) throws
+extension UserDefaults {
+    private enum Keys {
+        static let migratedV1Key = AppDomain + ".migration.v1"
+    }
+
+    var isMigratedV1: Bool {
+        get {
+            bool(forKey: Keys.migratedV1Key)
+        }
+        set {
+            set(newValue, forKey: Keys.migratedV1Key)
+        }
+    }
 }
